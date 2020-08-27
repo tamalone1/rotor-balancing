@@ -3,6 +3,8 @@
 
 Copyright (c) 2020 tamalone1
 """
+import cmath
+from math import radians
 
 # Basic single plane balancing: add up the centrifugal force vectors from the
 # imbalanced masses, and the resultant is the negative of the required force
@@ -87,9 +89,58 @@ def balance_one_plane(vectors):
 # With the known imbalances and the first balancing mass, balance the remaining
 # balancing plane. 
 
+
+def bearing_reactions():
+    ''' Calculate bearing reactions caused by imbalances.
+    
+    inputs:
+    imbalances: group of mass-radius products causing imbalance
+    bearing separation length
+    axial position of each imbalance, as z-coordinate
+    rotation speed: rad/s, about the z-axis
+
+    Outputs:
+    reaction forces at each bearing (vectors in xy-plane)
+    '''
+    pass
+
+''' See section 17.8 of Theory of Machines and Mechanisms, 4th ed.:
+Field Balancing with a Programmable Calculator.
+Complex numbers are used in the form x+yj or Re^jt. Both can be handled easily 
+with the builtin complex method and the cmath module.
+Unbalances cause reaction forces at each bearing 
+These are measured as X = X*e^jt for two bearings A and B
+Procedure:
+1. In first run, measure baseline reaction forces at each bearing 
+'''
+
+def get_stiffnesses(XAL, XAR, XBL, XBR, XA, XB, mL, mR):
+    ''' Find the stiffnesses in each balance plane due to trial masses.'''
+    AL = (XAL - XA)/mL
+    AR = (XAR - XA)/mR
+    BL = (XBL - XB)/mL
+    BR = (XBR - XB)/mR
+    return AL, AR, BL, BR
+
+def required_balances(AL, AR, BL, BR, XA, XB):
+    ''' Find the required balances to add to balance the rotor.'''
+    ML = (XA*BR-AR*XB)/(AL*BR-AR*BL)
+    MR = (AL*XB-XA*BL)/(AL*BR-AR*BL)
+    return ML, MR
+
+
 if __name__ == '__main__':
-    vectors = [Vector(10, 0, 0),
-               Vector(0, 20, 0),
-               Vector(5, 5, 0)]
-    solution = balance_one_plane(vectors)
-    print(solution)
+    XA = cmath.rect(8.6, radians(63))
+    XB = cmath.rect(6.5, radians(206))
+    mL = cmath.rect(10, radians(270))
+    mR = cmath.rect(12, radians(180))
+    XAL = cmath.rect(5.9, radians(123))
+    XBL = cmath.rect(4.5, radians(228))
+    XAR = cmath.rect(6.2, radians(36))
+    XBR = cmath.rect(10.4, radians(162))
+    
+    stiffnesses = get_stiffnesses(XAL, XAR, XBL, XBR, XA, XB, mL, mR)
+    ML, MR = required_balances(*stiffnesses, XA, XB)
+    print(f'ML: {cmath.polar(ML)}')
+    print(f'MR: {cmath.polar(MR)}')
+    
