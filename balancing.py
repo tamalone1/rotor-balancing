@@ -114,15 +114,14 @@ Procedure:
 1. In first run, measure baseline reaction forces at each bearing 
 '''
 
-def get_stiffnesses(XAL, XAR, XBL, XBR, XA, XB, mL, mR):
+def get_stiffnesses(XAm, XBm, XA, XB, m):
     ''' Find the stiffnesses in each balance plane due to trial masses.'''
-    AL = (XAL - XA)/mL
-    AR = (XAR - XA)/mR
-    BL = (XBL - XB)/mL
-    BR = (XBR - XB)/mR
-    return AL, AR, BL, BR
+    A = (XAm - XA)/m
+    B = (XBm - XB)/m
+    return A, B
 
-def required_balances(AL, AR, BL, BR, XA, XB):
+
+def required_balances(AL, BL, AR, BR, XA, XB):
     ''' Find the required balances to add to balance the rotor.'''
     ML = (XA*BR-AR*XB)/(AL*BR-AR*BL)
     MR = (AL*XB-XA*BL)/(AL*BR-AR*BL)
@@ -130,17 +129,25 @@ def required_balances(AL, AR, BL, BR, XA, XB):
 
 
 if __name__ == '__main__':
+    # Example problem from text
+    # Baseline reactions (length)
     XA = cmath.rect(8.6, radians(63))
     XB = cmath.rect(6.5, radians(206))
+    # Trial masses and locations (mg-m) on planes L and R respectively
     mL = cmath.rect(10, radians(270))
     mR = cmath.rect(12, radians(180))
+    # Trial reactions using mL on plane L (length)
     XAL = cmath.rect(5.9, radians(123))
     XBL = cmath.rect(4.5, radians(228))
+    # Trial reactions using mR on plane R (length)
     XAR = cmath.rect(6.2, radians(36))
     XBR = cmath.rect(10.4, radians(162))
-    
-    stiffnesses = get_stiffnesses(XAL, XAR, XBL, XBR, XA, XB, mL, mR)
-    ML, MR = required_balances(*stiffnesses, XA, XB)
-    print(f'ML: {cmath.polar(ML)}')
-    print(f'MR: {cmath.polar(MR)}')
-    
+    # Stiffness = change in the bearing reaction divided by the trial mass that
+    # caused it. One value per bearing per trial mass
+    left_stiffnesses = get_stiffnesses(XAL, XBL, XA, XB, mL)
+    right_stiffnesses = get_stiffnesses(XAR, XBR, XA, XB, mR)
+    # The existing unbalances and their locations, on planes L and R
+    ML, MR = required_balances(*left_stiffnesses, *right_stiffnesses, XA, XB)
+    # Print the result in polar form like the problem statement
+    print('ML: {:.03f} <{:4.03f}'.format(*cmath.polar(ML)))
+    print('MR: {:.03f} <{:4.03f}'.format(*cmath.polar(MR)))
