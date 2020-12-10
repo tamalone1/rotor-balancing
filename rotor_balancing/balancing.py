@@ -8,10 +8,10 @@ from math import radians
 
 # Basic single plane balancing: add up the centrifugal force vectors from the
 # imbalanced masses, and the resultant is the negative of the required force
-# vector. This is enough to static balancing, and a basic chunk for dynamic 
-# balancing. Need: add a number of 2D vectors in a plane. 
-# Should the Vector class be 3D?
+# vector. This is enough to static balancing, and a basic chunk for dynamic
+# balancing. Need: add a number of 2D vectors in a plane.
 # Should the Vector be xyz coordinates or R-theta?
+
 
 class Vector:
     def __init__(self, x, y, z):
@@ -71,7 +71,7 @@ def balance_one_plane(vectors):
 
     Inputs:
     vectors: sequence of Vector objects representing imbalance masses (x, y, z)
-    
+
     Returns:
     result: Vector equal and opposite to the sum of the input Vectors
     '''
@@ -84,15 +84,15 @@ def balance_one_plane(vectors):
 
 # Basic 3D balancing: choose two balancing planes where balance masses will be
 # added. Multiply each centrifugal force vector by the axial distance from one
-# of the chosen planes. With those scaled vectors, find the balance mass for the
-# other balancing plane, scaled likewise by the distance between the planes. 
+# of the chosen planes. With those scaled vectors, find the balance mass for
+# the other balancing plane, scaled likewise by the distance between the planes
 # With the known imbalances and the first balancing mass, balance the remaining
-# balancing plane. 
+# balancing plane.
 
 
 def bearing_reactions():
     ''' Calculate bearing reactions caused by imbalances.
-    
+
     inputs:
     imbalances: group of mass-radius products causing imbalance
     bearing separation length
@@ -104,15 +104,23 @@ def bearing_reactions():
     '''
     pass
 
+
 ''' See section 17.8 of Theory of Machines and Mechanisms, 4th ed.:
 Field Balancing with a Programmable Calculator.
-Complex numbers are used in the form x+yj or Re^jt. Both can be handled easily 
+Complex numbers are used in the form x+yj or Re^jt. Both can be handled easily
 with the builtin complex method and the cmath module.
-Unbalances cause reaction forces at each bearing 
+Unbalances cause reaction forces at each bearing
 These are measured as X = X*e^jt for two bearings A and B
 Procedure:
-1. In first run, measure baseline reaction forces at each bearing 
+1. In first run, measure baseline reaction motion at each bearing
+2. Add a known imbalance on the left balance plane, and measure the resulting
+reaction motion
+3. Remove the first imbalance, and add a different imbalance on the right
+balance plane. Measure the reaction motion at each bearing.
+4. Given the motions and the imbalances causing them, calculate the known
+imbalances that will negate the baseline motions.
 '''
+
 
 def get_stiffnesses(XAm, XBm, XA, XB, m):
     ''' Find the stiffnesses in each balance plane due to trial masses.'''
