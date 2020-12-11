@@ -5,11 +5,13 @@ Copyright (c) 2020 tamalone1
 """
 import cmath
 from math import radians
-import rotor_balancing
+from rotor_balancing.rotor import Rotor
 
 # Baseline reactions (length)
 XA = cmath.rect(8.6, radians(63))
 XB = cmath.rect(6.5, radians(206))
+# Create Rotor instance with baseline reactions motions
+rotor = Rotor(XA, XB)
 # Trial masses and locations (mg-m) on planes L and R respectively
 mL = cmath.rect(10, radians(270))
 mR = cmath.rect(12, radians(180))
@@ -21,10 +23,13 @@ XAR = cmath.rect(6.2, radians(36))
 XBR = cmath.rect(10.4, radians(162))
 # Stiffness = change in the bearing reaction divided by the trial mass that
 # caused it. One value per bearing per trial mass
-left_stiffnesses = rotor_balancing.get_stiffnesses(XAL, XBL, XA, XB, mL)
-right_stiffnesses = rotor_balancing.get_stiffnesses(XAR, XBR, XA, XB, mR)
+left_stiffnesses = rotor.get_stiffnesses(XAL, XBL, XA, XB, mL)
+right_stiffnesses = rotor.get_stiffnesses(XAR, XBR, XA, XB, mR)
 # The existing unbalances and their locations, on planes L and R
-ML, MR = rotor_balancing.required_balances(*left_stiffnesses, *right_stiffnesses, XA, XB)
+ML, MR = rotor.required_balances(*left_stiffnesses,
+                                 *right_stiffnesses,
+                                 XA,
+                                 XB)
 # Print the result in polar form like the problem statement
 print('ML: {:.03f} <{:4.03f}'.format(*cmath.polar(ML)))
 print('MR: {:.03f} <{:4.03f}'.format(*cmath.polar(MR)))
