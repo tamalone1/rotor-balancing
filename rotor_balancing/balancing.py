@@ -59,11 +59,25 @@ class Vector:
         return Vector(xf, yf, zf)
 
     def __neg__(self):
-        ''' Return the equal and opposite direction Vector. '''
+        """ Return the equal and opposite direction Vector. """
         xf = self.x * -1
         yf = self.y * -1
         zf = self.z * -1
         return Vector(xf, yf, zf)
+    
+    def __eq__(self, other):
+        """ Compare two Vectors for equality. """
+        # Check if the other parameter is a Vector
+        if isinstance(other, Vector):
+            # the parameter is a Vector, compare the components
+            if all([self.x == other.x,
+                    self.y == other.y,
+                    self.z == other.z]):
+                return True
+            else:
+                return False
+        else:
+            return NotImplemented
 
 
 def balance_one_plane(vectors):
