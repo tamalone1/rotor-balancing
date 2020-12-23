@@ -81,14 +81,14 @@ class Vector:
 
 
 def balance_one_plane(vectors):
-    ''' Get the balancing vector needed to balance in a single plane.
+    """ Get the balancing vector needed to balance in a single plane.
 
     Inputs:
     vectors: sequence of Vector objects representing imbalance masses (x, y, z)
 
     Returns:
     result: Vector equal and opposite to the sum of the input Vectors
-    '''
+    """
     # add up the input vectors
     result = Vector(0, 0, 0)
     for i in vectors:
@@ -105,7 +105,7 @@ def balance_one_plane(vectors):
 
 
 def bearing_reactions():
-    ''' Calculate bearing reactions caused by imbalances.
+    """ Calculate bearing reactions caused by imbalances.
 
     inputs:
     imbalances: group of mass-radius products causing imbalance
@@ -115,11 +115,11 @@ def bearing_reactions():
 
     Outputs:
     reaction forces at each bearing (vectors in xy-plane)
-    '''
+    """
     pass
 
 
-''' See section 17.8 of Theory of Machines and Mechanisms, 4th ed.:
+""" See section 17.8 of Theory of Machines and Mechanisms, 4th ed.:
 Field Balancing with a Programmable Calculator.
 Complex numbers are used in the form x+yj or Re^jt. Both can be handled easily
 with the builtin complex method and the cmath module.
@@ -133,18 +133,18 @@ reaction motion
 balance plane. Measure the reaction motion at each bearing.
 4. Given the motions and the imbalances causing them, calculate the known
 imbalances that will negate the baseline motions.
-'''
+"""
 
 
 def get_stiffnesses(XAm, XBm, XA, XB, m):
-    ''' Find the stiffnesses in each balance plane due to trial masses.'''
+    """ Find the stiffnesses in each balance plane due to trial masses."""
     A = (XAm - XA)/m
     B = (XBm - XB)/m
     return A, B
 
 
 def required_balances(AL, BL, AR, BR, XA, XB):
-    ''' Find the required balances to add to balance the rotor.'''
+    """ Find the required balances to add to balance the rotor."""
     ML = (XA*BR-AR*XB)/(AL*BR-AR*BL)
     MR = (AL*XB-XA*BL)/(AL*BR-AR*BL)
     return ML, MR
