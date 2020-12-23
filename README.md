@@ -15,14 +15,16 @@ cause vibration, and lead to premature fatigue failure.
 ## Installing
 
 Requirements:
-* None
+* No requirements outside the Python Standard Library
 
 Install by cloning this repo and using `pip`:
 
 ```python
-pip install -e balancing
+cd rotor-balancing
+pip install -e rotor_balancing
 ```
-
+Note the -e flag, which installs in editable mode and allows you to modify the
+source at will after installing.
 ---
 ## Usage
 
