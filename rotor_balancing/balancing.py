@@ -64,7 +64,7 @@ class Vector:
         yf = self.y * -1
         zf = self.z * -1
         return Vector(xf, yf, zf)
-    
+
     def __eq__(self, other):
         """ Compare two Vectors for equality. """
         # Check if the other parameter is a Vector

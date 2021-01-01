@@ -7,7 +7,7 @@ remove mass to bring the part into balance.
 Background concepts:
 
 In a rotating machine part, imbalance occurs when the mass is not distributed 
-around the rotation avis perfectly. This causes unequal centrifugal forces on 
+around the rotation axis perfectly. This causes unequal centrifugal forces on 
 the part as it rotates. These net forces create extra loads on the bearings, 
 cause vibration, and lead to premature fatigue failure.
 
@@ -23,8 +23,10 @@ Install by cloning this repo and using `pip`:
 cd rotor-balancing
 pip install -e rotor_balancing
 ```
+
 Note the -e flag, which installs in editable mode and allows you to modify the
 source at will after installing.
+
 ---
 ## Usage
 
@@ -34,11 +36,16 @@ Imbalances are dealt with in terms of mass x radius (kg-m).
 
 Determine the added balance mass needed to balance a single plane, based on the 
 known imbalances in that plane. Known imbalances are given in vector form, in 
-units of mass*radius. 
+units of mass*radius.
+
+`rotor_balancing.balancing.Vector` is a class which implements the
+vector addition, multiplication, and comparison operations required for
+single-plane balancing. `Vector` is three-dimensional, though for a single
+plane, the third component is not used.
 
 ### Dynamic Balancing using test masses
 To balance a given rotor, the existing imbalances have to be measured and 
-located. This can be done by using the **dynamic_balance** method. Three test 
+located. This can be done by using the **`Rotor`** class. Three test 
 runs are required, measuring the deflection of the rotor bearings while rotating
 with two test masses. Sensors should be set up to measure the bearing deflection
 correlated with the angular position of the rotor. Choose two balance planes, 
@@ -49,6 +56,8 @@ the other balance plane. Given the deflection magnitudes and phase angles at
 each bearing for each test mass (and the baseline), the method can determine the 
 required balance masses to add to each balance plane to bring the rotor into 
 dynamic balance.
+
+See the examples folder for a script showing usage of the `Rotor` class.
 
 ---
 ## Contributing
